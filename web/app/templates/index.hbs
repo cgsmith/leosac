@@ -1,0 +1,14 @@
+Leosac Web Interface
+
+{{outlet}}
+
+<br>
+{{#link-to "about"}}About{{/link-to}}
+
+<ul>
+  {{#each model as |user|}}
+      <li>
+        {{user.username}} -- {{user.firstname}}
+      </li>
+  {{/each}}
+</ul>

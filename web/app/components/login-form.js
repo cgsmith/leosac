@@ -2,22 +2,39 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   authSrv: Ember.inject.service('authentication'),
-  isLoginFailed: false,
-  username: '',
-  password: '',
+  pending: false,
+  inputUsername: '',
+  inputPassword: '',
+  errorMessage: '',
   actions: {
     login()
     {
-      console.log("Login in progress... " + this.get('username'));
       var self = this;
-      self.set('isLoginFailed', false);
+      this.set('errorMessage', '');
+      var username = this.get('inputUsername');
+      var password = this.get('inputPassword');
 
-      this.get('authSrv').authenticate(this.get('username'),
-        this.get('password'),
-        null,
+      if (username.length === 0 || password.length === 0)
+      {
+        this.set('errorMessage', 'Username and password are required.');
+        return;
+      }
+
+      this.set('pending', true);
+      this.get('authSrv').authenticate(username, password,
         function ()
         {
-          self.set('isLoginFailed', true);
+          self.set('pending', false);
+          // doesn't work.
+          self.transitionTo('index');
+        },
+        function (status, msg)
+        {
+          self.set('pending', false);
+          if (msg)
+            self.set('errorMessage', 'Auth failure [' + status + ']: ' + msg);
+          else
+            self.set('errorMessage', 'Auth failure [' + status + ']');
         });
     }
   }

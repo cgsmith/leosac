@@ -15,12 +15,23 @@ export default Ember.Service.extend({
    */
   user_id: false,
 
+  /**
+   * Are we currently attempting to authenticate.
+   */
+  pending: false,
+
+  /**
+   * This a defered object that is created when authentication starts.
+   * It is resolved when authentication is performed.
+   */
+  current_auth: false,
+
   init()
   {
     "use strict";
     // Attempt to automatically authenticate if we can find an auth
     // token
-    if (this.fetchLocalAuthToken())
+    if (this.fetchLocalAuthToken() !== 'false')
     {
       this.authenticateWithToken(this.fetchLocalAuthToken());
     }
@@ -35,17 +46,23 @@ export default Ember.Service.extend({
     "use strict";
     var self = this;
     var ws = this.get('websocket');
+
+    this.set('pending', true);
+    this.set('current_auth', Ember.RSVP.defer());
+
     return ws.sendJson('create_auth_token',
       {
         username: username,
         password: password
       }).then(function (data)
     {
+      self.set('pending', false);
       if (data.status === 0) // success
       {
         // Store auth token in local storage
         self.setLocalAuthToken(data.token);
         self.set('user_id', username);
+        self.get('current_auth').resolve();
         if (onSuccess)
           onSuccess();
       }
@@ -53,8 +70,9 @@ export default Ember.Service.extend({
       {
         self.set('user_id', false);
         self.setLocalAuthToken(false);
+        self.get('current_auth').reject();
         if (onFailure)
-          onFailure();
+          onFailure(data.status, data.message);
       }
     });
   },
@@ -63,17 +81,24 @@ export default Ember.Service.extend({
     "use strict";
     var self = this;
     var ws = this.get('websocket');
+
+    this.set('pending', true);
+    this.set('current_auth', Ember.RSVP.defer());
+
     return ws.sendJson('authenticate_with_token',
       {
         token: token
       }).then(function (data)
     {
+      self.set('pending', false);
       if (data.status === 0)
       {
         self.set('user_id', data.user_id);
+        self.get('current_auth').resolve();
       }
       else
       {
+        self.get('current_auth').reject();
         console.log('Authentication token invalid');
       }
     });
@@ -94,5 +119,21 @@ export default Ember.Service.extend({
   {
     "use strict";
     localStorage.auth_token = token;
+  },
+  /**
+   * Returns whether or not a user is currently logged in.
+   *
+   * If an authentication attempt is in progress, we return
+   * a promise instead. This promise will either be resolved
+   * or rejected, depending on whether or not the authentication
+   * attempt succeeded.
+   * @returns {*}
+   */
+  isLoggedIn()
+  {
+    "use strict";
+    if (!this.get('pending'))
+      return !!this.get('user_id');
+    return this.get('current_auth').promise;
   }
 });

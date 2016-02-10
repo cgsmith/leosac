@@ -1,10 +1,8 @@
 FOOTER IS GREAT
 
-{{toto}} <br>
-
-{{#if lama}}
-  LAMA
-{{else}}
-NOT LAMA
+<hr>
+Leosac version: {{globalInfo.version}}
+{{#if authSrv.user_id}}
+  --- Connected as {{authSrv.user_id}}
 {{/if}}
 

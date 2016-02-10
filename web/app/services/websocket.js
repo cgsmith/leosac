@@ -139,6 +139,5 @@ export default Ember.Service.extend({
       };
       callback[request.uuid] = cb;
     });
-  },
-
+  }
 });

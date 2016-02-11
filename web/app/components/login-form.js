@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   inputUsername: '',
   inputPassword: '',
   errorMessage: '',
+  onLoginSuccess: 'onLoginSuccess',
   actions: {
     login()
     {
@@ -15,12 +16,6 @@ export default Ember.Component.extend({
       var password = this.get('inputPassword');
 
       console.log("HERE");
-      this.sendAction("login");
-      /**
-       * Lets ignore the authenticate login and simply try
-       * to propagate the call to the route.
-       */
-      return;
       if (username.length === 0 || password.length === 0)
       {
         this.set('errorMessage', 'Username and password are required.');
@@ -32,8 +27,7 @@ export default Ember.Component.extend({
         function ()
         {
           self.set('pending', false);
-          // In real case we'd like to transition when
-          // we reach this point.
+          self.sendAction('onLoginSuccess');
         },
         function (status, msg)
         {

@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   authSrv: Ember.inject.service('authentication'),
   actions: {
-    login: function ()
+    onLoginSuccess: function ()
     {
-      alert("Route action handler");
+      this.transitionTo('index');
     }
   },
   beforeModel()

@@ -31,7 +31,7 @@ export default Ember.Service.extend({
     "use strict";
     // Attempt to automatically authenticate if we can find an auth
     // token
-    if (this.fetchLocalAuthToken() !== 'false')
+    if (this.fetchLocalAuthToken() !== false)
     {
       this.authenticateWithToken(this.fetchLocalAuthToken());
     }

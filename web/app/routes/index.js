@@ -15,7 +15,9 @@ export default Ember.Route.extend({
       return;
     }
     else if (promise_or_ret === true)
+    {
       return;
+    }
 
     promise_or_ret.then(function ()
     {
@@ -29,6 +31,5 @@ export default Ember.Route.extend({
 
   model() {
     "use strict";
-    return this.store.findAll('user');
   }
 });

@@ -15,7 +15,6 @@ export default Ember.Component.extend({
       var username = this.get('inputUsername');
       var password = this.get('inputPassword');
 
-      console.log("HERE");
       if (username.length === 0 || password.length === 0)
       {
         this.set('errorMessage', 'Username and password are required.');

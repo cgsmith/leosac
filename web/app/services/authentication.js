@@ -137,6 +137,10 @@ export default Ember.Service.extend({
             return !!this.get('user_id');
         return this.get('current_auth').promise;
     },
+    _isLoggedIn: Ember.computed('user_id', function ()
+    {
+        return this.isLoggedIn();
+    }),
     /**
      * Log an user out.
      *
@@ -150,7 +154,13 @@ export default Ember.Service.extend({
     {
         "use strict";
 
+        var self = this;
         localStorage.auth_token = false;
-        return this.get('websocket').sendJson('logout', {});
+        return this.get('websocket').sendJson('logout', {}).then(
+            () =>
+            {
+                self.set('user_id', false);
+            }
+        );
     }
 });

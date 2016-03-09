@@ -36,9 +36,5 @@ export default Ember.Route.extend({
             self.transitionTo('login');
         });
         return promise_or_ret;
-    },
-
-    model() {
-        "use strict";
     }
 });

@@ -1,7 +1,9 @@
 import Ember from 'ember';
+import LeosacRoute from '../leosac-route';
 
-export default Ember.Route.extend({
+export default LeosacRoute.extend({
   authSrv: Ember.inject.service('authentication'),
+  _title: 'Login',
   actions: {
     onLoginSuccess: function ()
     {
@@ -10,6 +12,7 @@ export default Ember.Route.extend({
   },
   beforeModel()
   {
+    this._super();
     this.get('authSrv');
   }
 });

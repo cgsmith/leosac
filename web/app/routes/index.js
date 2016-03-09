@@ -1,9 +1,10 @@
 import Ember from 'ember';
+import LeosacRoute from '../leosac-route';
 
-export default Ember.Route.extend({
+export default LeosacRoute.extend({
     authSrv: Ember.inject.service('authentication'),
-    actions:
-    {
+    _title: 'Index',
+    actions: {
         // Logout will only work from index route... which is bad.
         // Don't know how to fix it for now.
         onLogout()
@@ -15,6 +16,7 @@ export default Ember.Route.extend({
     beforeModel()
     {
         "use strict";
+        this._super();
         var self = this;
         var promise_or_ret = this.get('authSrv').isLoggedIn();
 
@@ -36,5 +38,10 @@ export default Ember.Route.extend({
             self.transitionTo('login');
         });
         return promise_or_ret;
+    },
+    model()
+    {
+        "use strict";
+        return {user_id: this.get('authSrv').user_id};
     }
 });

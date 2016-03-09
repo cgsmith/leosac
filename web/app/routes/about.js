@@ -1,9 +1,5 @@
-import Ember from 'ember';
+import LeosacRoute from '../leosac-route';
 
-export default Ember.Route.extend({
-    globalInfo: Ember.inject.service('leosac-info'),
-    beforeModel(){
-        "use strict";
-        this.get('globalInfo').set('current_view_title', 'About');
-    }
+export default LeosacRoute.extend({
+    _title: 'About'
 });

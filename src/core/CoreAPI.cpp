@@ -45,7 +45,7 @@ uint64_t CoreAPI::uptime() const
     uint64_t out;
     auto task = Tasks::GenericTask::build([&] () {
             auto now = steady_clock::now();
-            out = duration_cast<milliseconds>(now - kernel_.start_time()).count();
+            out = duration_cast<seconds>(now - kernel_.start_time()).count();
             return true;
     });
     kernel_.core_utils()->scheduler().enqueue(task, TargetThread::MAIN);

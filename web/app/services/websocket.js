@@ -38,7 +38,7 @@ export default Ember.Service.extend({
     {
       var obj = JSON.parse(event.data);
       var cb = self.get('callback')[obj.uuid];
-      // If we didnt find a callback, it means its opportunistic message
+      // If we didn't find a callback, it means its opportunistic message
       // from server
       if (!cb)
       {

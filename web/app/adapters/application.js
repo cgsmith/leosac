@@ -8,12 +8,12 @@ export default DS.Adapter.extend({
     var def = Ember.RSVP.defer();
 
     var ws = this.get('ws');
-    var p = ws.sendJson('get_users', {});
+    console.log("Try to find all: " + type);
+    var p = ws.sendJson('get_logs', {});
 
     p.then(function (data)
     {
       "use strict";
-      console.log("HIHIHIHI");
       console.log(data);
       store.push(data);
       def.resolve([]);

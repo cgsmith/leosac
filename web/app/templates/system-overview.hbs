@@ -14,13 +14,20 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Last logs
-        </div>
+    {{simple-number-picker desc='Number of entries'
+    onSelect=(route-action "updateLogView")
+    userNumber=model.numLastLogs
+    }}
 
-        <div class="panel-body">
-            {{logs-view logs=model.lastLogs}}
+    {{#if model.showLastLog}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Last logs
+            </div>
+
+            <div class="panel-body">
+                {{logs-view logs=model.lastLogs}}
+            </div>
         </div>
-    </div>
+    {{/if}}
 </div>

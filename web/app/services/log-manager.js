@@ -28,14 +28,17 @@ export default Ember.Service.extend({
         ws.sendJson('get_logs', {n: n}).then(
             function (response)
             {
-                response['data'].forEach((elem) =>
+                if (response['data'])
                 {
-                    var attr = elem['attributes'];
-                    lastLogs.push({
-                        message: attr.message,
-                        timestamp: new Date(attr.timestamp * 1000)
+                    response['data'].forEach((elem) =>
+                    {
+                        var attr = elem['attributes'];
+                        lastLogs.push({
+                            message: attr.message,
+                            timestamp: new Date(attr.timestamp * 1000)
+                        });
                     });
-                });
+                }
                 def.resolve(lastLogs);
             },
             function (failure)

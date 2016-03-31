@@ -13,7 +13,6 @@ export default Ember.Service.extend({
 
     var ws = this.get('ws');
     ws = new WebSocket('ws://localhost:8888/websocket');
-
     var self = this;
 
     ws.onopen = function ()

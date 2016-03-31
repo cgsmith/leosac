@@ -12,6 +12,7 @@ export default Ember.Service.extend({
     instance_name: "",
     config_version: false,
     uptime: false,
+    enabledModules: [],
 
     update()
     {
@@ -24,6 +25,7 @@ export default Ember.Service.extend({
                 self.set('config_version', response.config_version);
                 self.set('instance_name', response.instance_name);
                 self.set('uptime', response.uptime);
+                self.set('enabledModules', response.modules);
             },
             function (failure)
             {

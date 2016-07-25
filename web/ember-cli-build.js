@@ -39,7 +39,7 @@ module.exports = function(defaults) {
   //app.import('bower_components/jquery/dist/jquery.min.js');
   app.import('bower_components/metisMenu/dist/metisMenu.min.js');
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
-  app.import('bower_components/raphael/raphael-min.js');
+  //app.import('bower_components/raphael/raphael-min.js');
   app.import('bower_components/morrisjs/morris.min.js');
 
   app.import('bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js');

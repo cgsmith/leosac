@@ -40,7 +40,7 @@ class SQLiteLogSink : public spdlog::sinks::sink
 
         virtual void flush() override
         {
-            // Noop has writing to a SQL database is transactional.
+            // Noop as writing to a SQL database is transactional.
         }
 
         private:

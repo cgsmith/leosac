@@ -139,7 +139,7 @@ export default Ember.Service.extend({
     },
     _isLoggedIn: Ember.computed('user_id', function ()
     {
-        return this.isLoggedIn();
+        return !!this.get('user_id');
     }),
     /**
      * Log an user out.

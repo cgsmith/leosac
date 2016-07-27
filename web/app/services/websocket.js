@@ -41,7 +41,7 @@ export default Ember.Service.extend({
       // from server
       if (!cb)
       {
-        // Naive attempt to push to store. Would world if data
+        // Naive attempt to push to store. Would work if data
         // is JSONAPI compatible.
 
         // Will need more protocol handling tho.

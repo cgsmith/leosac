@@ -11,6 +11,7 @@ import Ember from 'ember';
  */
 export default Ember.Service.extend({
     websocket: Ember.inject.service('websocket'),
+    store: Ember.inject.service(),
 
     /**
      * Returns the `n` last logs
@@ -30,13 +31,15 @@ export default Ember.Service.extend({
             {
                 if (response['data'])
                 {
+                    console.log(response['data']);
+                    self.get('store').push({data: response['data']});
                     response['data'].forEach((elem) =>
                     {
-                        var attr = elem['attributes'];
-                        lastLogs.push({
+                        //var attr = elem['attributes'];
+/*                        lastLogs.push({
                             message: attr.message,
                             timestamp: new Date(attr.timestamp * 1000)
-                        });
+                        });*/
                     });
                 }
                 def.resolve(lastLogs);

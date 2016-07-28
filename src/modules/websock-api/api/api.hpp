@@ -134,7 +134,8 @@ class API {
          * to work, SQLite logging must be enabled.
          *
          * Request:
-         *     + `n`: The number of log entries to retrieve. Optional, default to 42.
+         *     + `p`: The page number. Starts at 0.
+         *     + `ps`: Page size: the number of item per page. Default to 20.
          *
          * Response:
          *     + ...
@@ -142,6 +143,27 @@ class API {
         json get_logs(const json &req);
 
       private:
+
+        /**
+         * Extract the value of a key from a json object.
+         *
+         * If the key cannot be found, this function returns the default
+         * value instead.
+         */
+        template<typename T>
+        T extract_with_default(const json &obj, const std::string &key, T default_value)
+        {
+            T ret = default_value;
+            try
+        {
+            ret = obj.at(key).get<T>();
+        }
+        catch (const std::out_of_range &e)
+        {
+        }
+            return ret;
+        }
+
         /**
          * The API server.
          */

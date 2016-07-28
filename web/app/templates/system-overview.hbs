@@ -14,10 +14,18 @@
         </div>
     </div>
 
-    {{simple-number-picker desc='Number of entries'
-    onSelect=(route-action "updateLogView")
+    {{simple-number-picker desc='Per page'
+    onSelect=(route-action "updateLogPerPage")
     userNumber=model.numLastLogs
     }}
+
+  There is a total of {{model.totalLogs}} msg.
+
+  {{numbered-paginator first=0
+  last=model.lastLogPage
+  current=model.currentLogPage
+  onPageChange=(route-action "updateLogPageNumber")
+  }}
 
     {{#if model.showLastLog}}
         <div class="panel panel-default">

@@ -134,24 +134,23 @@ API::json API::get_logs(const json &req)
         rep["data"] = {};
         odb::transaction t(db->begin());
 
-        int n;
-        try
-        {
-            n = req["n"].get<int>();
-        }
-        catch (const std::exception &)
-        {
-            n = 42;
-        }
+        int n, p, ps;
+        n = extract_with_default(req, "n", 42);
+        p = extract_with_default(req, "p", 0);
+        ps = extract_with_default(req, "ps", 20);
 
-        query q("ORDER BY" + query::id + "DESC " + "LIMIT" + query::_val(n));
+        int offset = p * ps;
+
+        query q("ORDER BY" + query::id + "ASC " + "LIMIT" + query::_val(ps) +
+                    "OFFSET" + query::_val(offset));
         result r(db->query<Tools::LogEntry>(q));
-        auto count = 0;
+        Tools::LogView view(db->query_value<Tools::LogView>());
+
         for (Tools::LogEntry &entry : r)
         {
             auto timestamp = boost::posix_time::to_time_t(entry.timestamp_);
             rep["data"].push_back({{"id", entry.id_},
-                                      {"type", "log-entry"},
+                                      {"type", "log-message"},
                                       {
                                           "attributes",
                                               {
@@ -160,10 +159,12 @@ API::json API::get_logs(const json &req)
                                               }
                                       }
                                   });
-            count++;
         }
 
-        rep["meta"] = {{"total", count}};
+        rep["meta"] = {{"total", view.count},
+                       {"last", view.count / ps},
+                       {"first", 0},
+        };
         rep["status"] = 0;
     }
     else

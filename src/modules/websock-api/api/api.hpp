@@ -136,6 +136,7 @@ class API {
          * Request:
          *     + `p`: The page number. Starts at 0.
          *     + `ps`: Page size: the number of item per page. Default to 20.
+         *     + `sort`: Either 'asc' or 'desc'.
          *
          * Response:
          *     + ...
@@ -151,7 +152,8 @@ class API {
          * value instead.
          */
         template<typename T>
-        T extract_with_default(const json &obj, const std::string &key, T default_value)
+        typename std::enable_if<!std::is_same<const char *, T>::value, T>::type
+        extract_with_default(const json &obj, const std::string &key, T default_value)
         {
             T ret = default_value;
             try
@@ -162,6 +164,13 @@ class API {
         {
         }
             return ret;
+        }
+
+        template<typename T>
+        typename std::enable_if<std::is_same<const char *, T>::value, std::string>::type
+        extract_with_default(const json &obj, const std::string &key, T default_value)
+        {
+            return extract_with_default<std::string>(obj, key, default_value);
         }
 
         /**

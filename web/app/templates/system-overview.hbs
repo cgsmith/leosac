@@ -4,38 +4,35 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="#" {{action 'refresh'}}>
+            <a href="#" {{action 'refreshOverview'}}>
                 <i style="color: green" class="fa fa-refresh"></i> Refresh
             </a>
         </div>
 
         <div class="panel-body">
-            {{system-overview}}
+          {{system-overview}}
         </div>
     </div>
 
-    {{simple-number-picker desc='Per page'
-    onSelect=(route-action "updateLogPerPage")
-    userNumber=model.numLastLogs
-    }}
-
-  There is a total of {{model.totalLogs}} msg.
-
-  {{numbered-paginator first=0
-  last=model.lastLogPage
-  current=model.currentLogPage
-  onPageChange=(route-action "updateLogPageNumber")
+  {{simple-number-picker desc='Per page'
+  userNumber=logPerPage
   }}
 
-    {{#if model.showLastLog}}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Last logs
-            </div>
+    There is a total of {{totalLogs}} log messages.
 
-            <div class="panel-body">
-                {{logs-view logs=model.lastLogs}}
-            </div>
+  {{numbered-paginator first=0
+  last=lastLogPage
+  current=currentLogPage
+  onPageChange=(action "updateLogPageNumber")
+  }}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Last logs
         </div>
-    {{/if}}
+
+        <div class="panel-body">
+          {{logs-view logs=lastLogs}}
+        </div>
+    </div>
 </div>

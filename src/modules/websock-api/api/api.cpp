@@ -134,14 +134,15 @@ API::json API::get_logs(const json &req)
         rep["data"] = {};
         odb::transaction t(db->begin());
 
-        int n, p, ps;
-        n = extract_with_default(req, "n", 42);
-        p = extract_with_default(req, "p", 0);
-        ps = extract_with_default(req, "ps", 20);
-
+        int p = extract_with_default(req, "p", 0); // page
+        int ps = extract_with_default(req, "ps", 20); // page size
+        if (ps <= 0)
+            ps = 1;
         int offset = p * ps;
+        std::string sort = extract_with_default(req, "sort", "desc");
+        std::string order_by = sort == "asc" ? "ASC" : "DESC";
 
-        query q("ORDER BY" + query::id + "ASC " + "LIMIT" + query::_val(ps) +
+        query q("ORDER BY" + query::id + order_by + "LIMIT" + query::_val(ps) +
                     "OFFSET" + query::_val(offset));
         result r(db->query<Tools::LogEntry>(q));
         Tools::LogView view(db->query_value<Tools::LogView>());

@@ -1,12 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:log-manager', 'Unit | Service | log manager', {
+moduleFor('controller:system-overview', 'Unit | Controller | system overview', {
   // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  // needs: ['controller:foo']
 });
 
 // Replace this with your real tests.
 test('it exists', function(assert) {
-  let service = this.subject();
-  assert.ok(service);
+  let controller = this.subject();
+  assert.ok(controller);
 });

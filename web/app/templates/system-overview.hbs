@@ -14,17 +14,23 @@
         </div>
     </div>
 
-  {{simple-number-picker desc='Per page'
-  userNumber=logPerPage
-  }}
+    <div class="row">
+      {{bs-input type='number' value=logPerPage
+      label='Log per page'
+      }}
+    </div>
 
-    There is a total of {{totalLogs}} log messages.
+    <div class="row text-center">
+        There is a total of {{totalLogs}} log messages.
+    </div>
 
-  {{numbered-paginator first=0
-  last=lastLogPage
-  current=currentLogPage
-  onPageChange=(action "updateLogPageNumber")
-  }}
+    <div class="row text-center">
+      {{numbered-paginator first=0
+      last=lastLogPage
+      current=currentLogPage
+      onPageChange=(action "updateLogPageNumber")
+      }}
+    </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">

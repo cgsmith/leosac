@@ -6,7 +6,10 @@ export default Ember.Component.extend({
     current: 0,
     pages: [],
     // The action that is triggered when a user change page by clicking.
-    onPageChange: (n) => {n = n;},
+    onPageChange: (n) =>
+    {
+        n = n;
+    },
     didUpdateAttrs() {
         "use strict";
         this._super();
@@ -22,7 +25,8 @@ export default Ember.Component.extend({
         this.set('pages', []);
         const pages = this.get('pages');
 
-        const safeAdd = (n) => {
+        const safeAdd = (n) =>
+        {
             if (pages.indexOf(n) === -1)
                 pages.push(n);
         };
@@ -31,14 +35,17 @@ export default Ember.Component.extend({
         // all page number. Rather we propose something else.
         if (last - first > 10)
         {
-            const next = current + 1 > last ? last : current + 1;
-            const prev = current - 1 < first ? first : current - 1;
+            for (let i = 0; i < 50; i += 10)
+            {
+                const next = current + i > last ? last : current + i;
+                const prev = current - i < first ? first : current - i;
 
-            safeAdd(first);
-            safeAdd(prev);
-            safeAdd(current);
-            safeAdd(next);
-            safeAdd(last);
+                safeAdd(first);
+                safeAdd(prev);
+                safeAdd(current);
+                safeAdd(next);
+                safeAdd(last);
+            }
         }
         else
         {
@@ -49,6 +56,10 @@ export default Ember.Component.extend({
             }
             safeAdd(last);
         }
+        pages.sort(function (a, b)
+        {
+            return a - b;
+        });
     },
     init()
     {
@@ -56,8 +67,7 @@ export default Ember.Component.extend({
         this._super();
         this.compute();
     },
-    actions:
-    {
+    actions: {
         changePage(n)
         {
             "use strict";

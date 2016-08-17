@@ -13,6 +13,7 @@ export default LeosacRoute.extend({
     model()
     {
         "use strict";
-        return {user_id: this.get('authSrv').user_id};
+        return {user_id: this.get('authSrv').user_id,
+            username: this.get('authSrv').username};
     }
 });

@@ -11,9 +11,14 @@ import Ember from 'ember';
 export default Ember.Service.extend({
     websocket: Ember.inject.service('websocket'),
     /**
-     * Username of the currently logged in user.
+     * User Id of the currently logged in user.
      */
     user_id: false,
+
+    /**
+     * Username of the currently logged in user.
+     */
+    username: '',
 
     /**
      * Are we currently attempting to authenticate.
@@ -62,7 +67,8 @@ export default Ember.Service.extend({
             {
                 // Store auth token in local storage
                 self.setLocalAuthToken(data.token);
-                self.set('user_id', username);
+                self.set('user_id', data.user_id);
+                self.set('username', username);
                 self.get('current_auth').resolve();
                 if (onSuccess)
                     onSuccess();
@@ -70,6 +76,7 @@ export default Ember.Service.extend({
             else
             {
                 self.set('user_id', false);
+                self.set('username', '');
                 self.setLocalAuthToken(false);
                 self.get('current_auth').reject();
                 if (onFailure)
@@ -95,6 +102,7 @@ export default Ember.Service.extend({
             if (data.status === 0)
             {
                 self.set('user_id', data.user_id);
+                self.set('username', data.username);
                 self.get('current_auth').resolve();
             }
             else
@@ -160,6 +168,7 @@ export default Ember.Service.extend({
             () =>
             {
                 self.set('user_id', false);
+                self.set('username', '');
             }
         );
     }
